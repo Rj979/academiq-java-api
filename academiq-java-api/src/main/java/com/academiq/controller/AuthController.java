@@ -10,7 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/auth")
+@CrossOrigin(origins = "http://localhost:3000") // Allow frontend
 public class AuthController {
 
     private final AppUserRepository userRepo;
@@ -26,24 +27,54 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody AppUser user) {
         if (userRepo.findByUsername(user.getUsername()).isPresent()) {
-            return ResponseEntity.badRequest().body(Map.of("message","username_taken"));
+            return ResponseEntity.badRequest().body(Map.of("message", "username_taken"));
         }
+        // encode password
         user.setPassword(encoder.encode(user.getPassword()));
+
+        // ensure role prefix
+        if (user.getRole() != null && !user.getRole().startsWith("ROLE_")) {
+            user.setRole("ROLE_" + user.getRole().toUpperCase());
+        }
+
         AppUser saved = userRepo.save(user);
-        saved.setPassword(null);
+        saved.setPassword(null); // never expose password
         return ResponseEntity.ok(saved);
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody Map<String,String> body) {
+    @PostMapping("/login/student")
+    public ResponseEntity<?> loginStudent(@RequestBody Map<String, String> body) {
         String username = body.get("username");
         String password = body.get("password");
+
         return userRepo.findByUsername(username)
                 .filter(u -> encoder.matches(password, u.getPassword()))
                 .map(u -> {
+                    if (!"ROLE_STUDENT".equals(u.getRole())) {
+                        return ResponseEntity.status(403).body(Map.of("message", "Not a student account"));
+                    }
                     String token = jwtUtils.generateToken(u.getUsername());
-                    return ResponseEntity.ok(Map.of("token", token, "user", Map.of("id", u.getId(), "username", u.getUsername(), "role", u.getRole())));
+                    u.setPassword(null);
+                    return ResponseEntity.ok(Map.of("token", token, "user", u));
                 })
-                .orElse(ResponseEntity.status(401).body(Map.of("message","invalid_credentials")));
+                .orElse(ResponseEntity.status(403).body(Map.of("message", "Invalid credentials")));
+    }
+
+    @PostMapping("/login/staff")
+    public ResponseEntity<?> loginStaff(@RequestBody Map<String, String> body) {
+        String username = body.get("username");
+        String password = body.get("password");
+
+        return userRepo.findByUsername(username)
+                .filter(u -> encoder.matches(password, u.getPassword()))
+                .map(u -> {
+                    if (!"ROLE_STAFF".equals(u.getRole())) {
+                        return ResponseEntity.status(403).body(Map.of("message", "Not a staff account"));
+                    }
+                    String token = jwtUtils.generateToken(u.getUsername());
+                    u.setPassword(null);
+                    return ResponseEntity.ok(Map.of("token", token, "user", u));
+                })
+                .orElse(ResponseEntity.status(403).body(Map.of("message", "Invalid credentials")));
     }
 }

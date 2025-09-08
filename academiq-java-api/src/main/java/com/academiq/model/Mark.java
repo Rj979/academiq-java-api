@@ -1,17 +1,20 @@
 package com.academiq.model;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
-@Data
 @Entity
-@Table(name = "mark")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Mark {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Integer internal_marks;
-    private Integer semester;
+    private int internal_marks;
+    private int semester;
 
     @ManyToOne
     @JoinColumn(name = "student_id")

@@ -1,15 +1,21 @@
 package com.academiq.model;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
-@Data
 @Entity
-@Table(name = "subject")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Subject {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Integer credits;
+
+    @Column(unique = true, nullable = false)
     private String subject_code;
+
     private String subject_name;
+    private int credits;
 }
