@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: academiq-java-api
+    env: node
+    plan: free
+    buildCommand: >
+      curl -s "https://get.sdkman.io" | bash &&
+      . "$HOME/.sdkman/bin/sdkman-init.sh" &&
+      sdk install java 21.0.4-tem &&
+      chmod +x ./mvnw &&
+      ./mvnw clean package -DskipTests
+    startCommand: >
+      curl -s "https://get.sdkman.io" | bash &&
+      . "$HOME/.sdkman/bin/sdkman-init.sh" &&
+      sdk install java 21.0.4-tem &&
+      java -jar target/academiq-java-api-0.0.1-SNAPSHOT.jar
+    envVars:
+      - key: PORT
+        value: 8080
