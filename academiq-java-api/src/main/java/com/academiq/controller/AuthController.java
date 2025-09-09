@@ -11,7 +11,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/auth")
-@CrossOrigin(origins = "http://localhost:3000") // Allow frontend
+@CrossOrigin(origins = "http://localhost:3000")
 public class AuthController {
 
     private final AppUserRepository userRepo;
@@ -26,26 +26,44 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody AppUser user) {
-        if (userRepo.findByUsername(user.getUsername()).isPresent()) {
-            return ResponseEntity.badRequest().body(Map.of("message", "username_taken"));
-        }
-        // encode password
-        user.setPassword(encoder.encode(user.getPassword()));
+        try {
+            if (userRepo.findByUsername(user.getUsername()).isPresent()) {
+                return ResponseEntity.badRequest().body(Map.of("message", "Username already exists"));
+            }
 
-        // ensure role prefix
-        if (user.getRole() != null && !user.getRole().startsWith("ROLE_")) {
-            user.setRole("ROLE_" + user.getRole().toUpperCase());
-        }
+            // Encode password
+            user.setPassword(encoder.encode(user.getPassword()));
 
-        AppUser saved = userRepo.save(user);
-        saved.setPassword(null); // never expose password
-        return ResponseEntity.ok(saved);
+            // Ensure role prefix - handle both "STUDENT"/"STAFF" and "ROLE_STUDENT"/"ROLE_STAFF"
+            String role = user.getRole();
+            if (role != null) {
+                if (!role.startsWith("ROLE_")) {
+                    user.setRole("ROLE_" + role.toUpperCase());
+                }
+            } else {
+                user.setRole("ROLE_STUDENT"); // Default role
+            }
+
+            AppUser saved = userRepo.save(user);
+            saved.setPassword(null); // Never expose password
+            
+            return ResponseEntity.ok(Map.of(
+                "message", "User registered successfully",
+                "user", saved
+            ));
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(Map.of("message", "Registration failed: " + e.getMessage()));
+        }
     }
 
     @PostMapping("/login/student")
     public ResponseEntity<?> loginStudent(@RequestBody Map<String, String> body) {
         String username = body.get("username");
         String password = body.get("password");
+
+        if (username == null || password == null) {
+            return ResponseEntity.badRequest().body(Map.of("message", "Username and password are required"));
+        }
 
         return userRepo.findByUsername(username)
                 .filter(u -> encoder.matches(password, u.getPassword()))
@@ -55,15 +73,23 @@ public class AuthController {
                     }
                     String token = jwtUtils.generateToken(u.getUsername());
                     u.setPassword(null);
-                    return ResponseEntity.ok(Map.of("token", token, "user", u));
+                    return ResponseEntity.ok(Map.of(
+                        "token", token, 
+                        "user", u,
+                        "message", "Login successful"
+                    ));
                 })
-                .orElse(ResponseEntity.status(403).body(Map.of("message", "Invalid credentials")));
+                .orElse(ResponseEntity.status(401).body(Map.of("message", "Invalid credentials")));
     }
 
     @PostMapping("/login/staff")
     public ResponseEntity<?> loginStaff(@RequestBody Map<String, String> body) {
         String username = body.get("username");
         String password = body.get("password");
+
+        if (username == null || password == null) {
+            return ResponseEntity.badRequest().body(Map.of("message", "Username and password are required"));
+        }
 
         return userRepo.findByUsername(username)
                 .filter(u -> encoder.matches(password, u.getPassword()))
@@ -73,8 +99,33 @@ public class AuthController {
                     }
                     String token = jwtUtils.generateToken(u.getUsername());
                     u.setPassword(null);
-                    return ResponseEntity.ok(Map.of("token", token, "user", u));
+                    return ResponseEntity.ok(Map.of(
+                        "token", token, 
+                        "user", u,
+                        "message", "Login successful"
+                    ));
                 })
-                .orElse(ResponseEntity.status(403).body(Map.of("message", "Invalid credentials")));
+                .orElse(ResponseEntity.status(401).body(Map.of("message", "Invalid credentials")));
+    }
+
+    @PostMapping("/validate")
+    public ResponseEntity<?> validateToken(@RequestHeader("Authorization") String authHeader) {
+        try {
+            if (authHeader != null && authHeader.startsWith("Bearer ")) {
+                String token = authHeader.substring(7);
+                if (jwtUtils.validateToken(token)) {
+                    String username = jwtUtils.getUsernameFromToken(token);
+                    return userRepo.findByUsername(username)
+                            .map(user -> {
+                                user.setPassword(null);
+                                return ResponseEntity.ok(Map.of("valid", true, "user", user));
+                            })
+                            .orElse(ResponseEntity.status(401).body(Map.of("valid", false, "message", "User not found")));
+                }
+            }
+            return ResponseEntity.status(401).body(Map.of("valid", false, "message", "Invalid token"));
+        } catch (Exception e) {
+            return ResponseEntity.status(401).body(Map.of("valid", false, "message", "Token validation failed"));
+        }
     }
 }

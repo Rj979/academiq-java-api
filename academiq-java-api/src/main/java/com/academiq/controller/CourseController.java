@@ -9,6 +9,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/courses")
+@CrossOrigin(origins = "http://localhost:3000")
 public class CourseController {
     private final CourseRepository repo;
     public CourseController(CourseRepository repo){this.repo=repo;}
@@ -24,7 +25,13 @@ public class CourseController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Course> update(@PathVariable Long id, @RequestBody Course upd){
-        return repo.findById(id).map(existing->{ existing.setCourse_code(upd.getCourse_code()); existing.setCourse_name(upd.getCourse_name()); existing.setDepartment(upd.getDepartment()); return ResponseEntity.ok(repo.save(existing)); }).orElse(ResponseEntity.notFound().build());
+        return repo.findById(id).map(existing->{ 
+            existing.setTeacher(upd.getTeacher()); 
+            existing.setPaper(upd.getPaper()); 
+            existing.setSemester(upd.getSemester()); 
+            existing.setAcademicYear(upd.getAcademicYear()); 
+            return ResponseEntity.ok(repo.save(existing)); 
+        }).orElse(ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")
