@@ -23,6 +23,24 @@ public class AuthController {
         this.encoder = encoder;
         this.jwtUtils = jwtUtils;
     }
+    @PostMapping("/init-passwords/students")
+    public ResponseEntity<?> initStudentPasswords(@RequestBody Map<String, String> body) {
+        String newPassword = body.getOrDefault("password", "student@123");
+        try {
+            var users = userRepo.findAll();
+            int updated = 0;
+            for (var u : users) {
+                if ("ROLE_STUDENT".equals(u.getRole())) {
+                    u.setPassword(encoder.encode(newPassword));
+                    userRepo.save(u);
+                    updated++;
+                }
+            }
+            return ResponseEntity.ok(Map.of("message", "Passwords initialized", "count", updated));
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(Map.of("message", "Failed: " + e.getMessage()));
+        }
+    }
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody AppUser user) {
@@ -94,7 +112,7 @@ public class AuthController {
         return userRepo.findByUsername(username)
                 .filter(u -> encoder.matches(password, u.getPassword()))
                 .map(u -> {
-                    if (!"ROLE_STAFF".equals(u.getRole())) {
+                    if (!"ROLE_STAFF".equals(u.getRole()) && !"ROLE_TEACHER".equals(u.getRole())) {
                         return ResponseEntity.status(403).body(Map.of("message", "Not a staff account"));
                     }
                     String token = jwtUtils.generateToken(u.getUsername());

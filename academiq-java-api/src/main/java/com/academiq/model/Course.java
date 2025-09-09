@@ -3,7 +3,7 @@ package com.academiq.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "courses")
+@Table(name = "courses_runtime")
 public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

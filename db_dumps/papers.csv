@@ -1,0 +1,34 @@
+id,code,name,category,credits,department,created_at
+67,CS100,Engineering Mathematics I,Engineering Mathematics,4,Computer Science and Engineering,2025-09-08 21:52:50
+68,CS101,Engineering Physics,Engineering Mathematics,3,Computer Science and Engineering,2025-09-08 21:52:50
+69,CS102,Engineering Chemistry,Engineering Mathematics,3,Computer Science and Engineering,2025-09-08 21:52:50
+70,CS103,Programming in C,Programming Fundamentals,4,Computer Science and Engineering,2025-09-08 21:52:50
+71,CS104,Data Structures,Data Structures and Algorithms,4,Computer Science and Engineering,2025-09-08 21:52:50
+72,CS105,Computer Organization,Computer Networks,3,Computer Science and Engineering,2025-09-08 21:52:51
+73,CS201,Object Oriented Programming,Programming Fundamentals,4,Computer Science and Engineering,2025-09-08 21:52:51
+74,CS202,Database Management Systems,Database Management Systems,4,Computer Science and Engineering,2025-09-08 21:52:51
+75,CS203,Computer Networks,Computer Networks,4,Computer Science and Engineering,2025-09-08 21:52:51
+76,CS204,Operating Systems,Operating Systems,4,Computer Science and Engineering,2025-09-08 21:52:51
+77,CS205,Software Engineering,Software Engineering,3,Computer Science and Engineering,2025-09-08 21:52:51
+78,CS301,Web Technologies,Web Technologies,4,Computer Science and Engineering,2025-09-08 21:52:52
+79,CS302,Machine Learning,Machine Learning,4,Computer Science and Engineering,2025-09-08 21:52:52
+80,CS303,Artificial Intelligence,Artificial Intelligence,4,Computer Science and Engineering,2025-09-08 21:52:52
+81,CS304,Mobile Application Development,Mobile Application Development,4,Computer Science and Engineering,2025-09-08 21:52:52
+82,CS305,Cybersecurity,Cybersecurity,3,Computer Science and Engineering,2025-09-08 21:52:52
+83,EC100,Basic Electronics,Digital Signal Processing,4,Electronics and Communication Engineering,2025-09-08 21:52:52
+84,EC101,Digital Electronics,Digital Signal Processing,4,Electronics and Communication Engineering,2025-09-08 21:52:53
+85,EC102,Microprocessors,Microprocessors and Microcontrollers,4,Electronics and Communication Engineering,2025-09-08 21:52:53
+86,EC201,Communication Systems,Computer Networks,4,Electronics and Communication Engineering,2025-09-08 21:52:53
+87,EC202,Control Systems,Control Systems,4,Electronics and Communication Engineering,2025-09-08 21:52:53
+88,EC203,Digital Signal Processing,Digital Signal Processing,4,Electronics and Communication Engineering,2025-09-08 21:52:53
+89,ME100,Engineering Mechanics,Structural Analysis,4,Mechanical Engineering,2025-09-08 21:52:54
+90,ME101,Thermodynamics,Thermodynamics,4,Mechanical Engineering,2025-09-08 21:52:54
+91,ME102,Fluid Mechanics,Fluid Mechanics,4,Mechanical Engineering,2025-09-08 21:52:54
+92,ME201,Machine Design,Structural Analysis,4,Mechanical Engineering,2025-09-08 21:52:54
+93,ME202,Heat Transfer,Thermodynamics,4,Mechanical Engineering,2025-09-08 21:52:54
+94,CE100,Structural Analysis,Structural Analysis,4,Civil Engineering,2025-09-08 21:52:54
+95,CE101,Concrete Technology,Structural Analysis,4,Civil Engineering,2025-09-08 21:52:55
+96,CE102,Geotechnical Engineering,Structural Analysis,4,Civil Engineering,2025-09-08 21:52:55
+97,EE100,Electrical Circuits,Power Systems,4,Electrical and Electronics Engineering,2025-09-08 21:52:55
+98,EE101,Power Systems,Power Systems,4,Electrical and Electronics Engineering,2025-09-08 21:52:55
+99,EE102,Electrical Machines,Power Systems,4,Electrical and Electronics Engineering,2025-09-08 21:52:55
