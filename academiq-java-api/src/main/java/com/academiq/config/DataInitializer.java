@@ -12,20 +12,18 @@ public class DataInitializer implements CommandLineRunner {
     private final AppUserRepository userRepo;
     private final CourseRepository courseRepo;
     private final SubjectRepository subjectRepo;
-    private final PaperRepository paperRepo;
     private final StudentRepository studentRepo;
     private final TeacherRepository teacherRepo;
     private final PasswordEncoder encoder;
 
     public DataInitializer(AppUserRepository userRepo, CourseRepository courseRepo,
                           SubjectRepository subjectRepo, StudentRepository studentRepo,
-                          TeacherRepository teacherRepo, PaperRepository paperRepo, PasswordEncoder encoder) {
+                          TeacherRepository teacherRepo, PasswordEncoder encoder) {
         this.userRepo = userRepo;
         this.courseRepo = courseRepo;
         this.subjectRepo = subjectRepo;
         this.studentRepo = studentRepo;
         this.teacherRepo = teacherRepo;
-        this.paperRepo = paperRepo;
         this.encoder = encoder;
     }
 
@@ -75,27 +73,6 @@ public class DataInitializer implements CommandLineRunner {
                     .credits(3)
                     .build();
             subjectRepo.save(dbms);
-        }
-
-        // Create sample papers per branch
-        if (paperRepo.count() == 0) {
-            // CSE
-            paperRepo.save(new Paper("CS101", "Java Programming", "CORE", 4, "CSE"));
-            paperRepo.save(new Paper("CS102", "Database Management Systems", "CORE", 3, "CSE"));
-            paperRepo.save(new Paper("MA201", "Discrete Mathematics", "CORE", 3, "CSE"));
-            paperRepo.save(new Paper("HS101", "Professional Communication", "HUM", 2, "CSE"));
-
-            // ECE
-            paperRepo.save(new Paper("EC101", "Signals and Systems", "CORE", 4, "ECE"));
-            paperRepo.save(new Paper("EC102", "Digital Electronics", "CORE", 3, "ECE"));
-            paperRepo.save(new Paper("EC201", "Analog Circuits", "CORE", 3, "ECE"));
-            paperRepo.save(new Paper("HS102", "Technical Communication", "HUM", 2, "ECE"));
-
-            // ME
-            paperRepo.save(new Paper("ME101", "Engineering Mechanics", "CORE", 4, "ME"));
-            paperRepo.save(new Paper("ME102", "Thermodynamics", "CORE", 3, "ME"));
-            paperRepo.save(new Paper("ME201", "Manufacturing Processes", "CORE", 3, "ME"));
-            paperRepo.save(new Paper("HS103", "Professional Ethics", "HUM", 2, "ME"));
         }
 
         // Create sample teachers - DISABLED (using KTU data instead)

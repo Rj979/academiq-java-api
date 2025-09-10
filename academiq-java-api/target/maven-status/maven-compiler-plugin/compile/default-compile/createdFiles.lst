@@ -1,15 +1,11 @@
-com\academiq\controller\SimpleCourseController.class
 com\academiq\config\WebConfig$1.class
 com\academiq\model\Course.class
 com\academiq\controller\TeacherController.class
 com\academiq\model\AppUser.class
 com\academiq\config\DataInitializer.class
-com\academiq\controller\TimeScheduleController.class
 com\academiq\repository\AppUserRepository.class
-com\academiq\controller\DepartmentScheduleController.class
 com\academiq\repository\StudentRepository.class
 com\academiq\model\Teacher.class
-com\academiq\model\TimeSchedule.class
 com\academiq\repository\SubjectRepository.class
 com\academiq\security\JwtUtils.class
 com\academiq\model\AppUser$AppUserBuilder.class
@@ -20,7 +16,6 @@ com\academiq\controller\PaperController.class
 com\academiq\config\CustomUserDetailsService.class
 com\academiq\model\Mark$MarkBuilder.class
 com\academiq\model\Student.class
-com\academiq\repository\TimeScheduleRepository.class
 com\academiq\model\Mark.class
 com\academiq\repository\MarkRepository.class
 com\academiq\model\Student$StudentBuilder.class
@@ -34,11 +29,6 @@ com\academiq\controller\MarkController.class
 com\academiq\repository\PaperRepository.class
 com\academiq\controller\AuthController.class
 com\academiq\security\JwtAuthenticationFilter.class
-com\academiq\repository\SimpleCourseRepository.class
-com\academiq\controller\AdminController.class
 com\academiq\repository\CourseRepository.class
 com\academiq\controller\CourseController.class
-com\academiq\model\DepartmentSchedule.class
 com\academiq\config\WebConfig.class
-com\academiq\model\SimpleCourse.class
-com\academiq\repository\DepartmentScheduleRepository.class
