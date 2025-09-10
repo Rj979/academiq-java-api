@@ -1,23 +1,67 @@
 # 🎓 AcademiQ Backend
 
-AcademiQ is a modern **college management system** backend built with **Spring Boot, JPA, and MariaDB**.  
-This service powers the AcademiQ ecosystem by providing secure APIs for students, staff, and administrators.  
+![Java](https://img.shields.io/badge/Java-21-blue)
+![Spring Boot](https://img.shields.io/badge/Spring_Boot-3-green)
+![MariaDB](https://img.shields.io/badge/MariaDB-10.11-blue)
+![Docker](https://img.shields.io/badge/Docker-latest-lightgrey)
+![License](https://img.shields.io/badge/License-MIT-yellow)
+
+AcademiQ is a modern **college management system** backend built with **Spring Boot, JPA, and MariaDB**. It provides secure APIs for managing students, staff, courses, and enrollments, powering the AcademiQ ecosystem.
+
+---
+
+## ⚙️ How the System Works
+
+1. **Authentication & Authorization**
+   - Users (students, staff, admins) authenticate via **JWT tokens**.
+   - JWT tokens are required for accessing protected API endpoints.
+   - Roles determine access: `ADMIN`, `STAFF`, `STUDENT`.
+
+2. **Student & Staff Management**
+   - Admins can add, update, or remove students and staff.
+   - User profiles are stored in **MariaDB** via **JPA/Hibernate**.
+
+3. **Course & Enrollment Handling**
+   - Courses are created and assigned to staff.
+   - Students can be enrolled in multiple courses.
+   - Relationships are maintained in the database (Students ↔ Courses ↔ Staff).
+
+4. **RESTful API Layer**
+   - Controllers expose endpoints.
+   - Services handle business logic.
+   - Repositories manage database access via **JPA**.
+
+5. **Database Structure**
+   - Entities: Users, Students, Staff, Courses, Enrollments.
+   - Relationships: One-to-many (Staff → Courses), Many-to-many (Students ↔ Courses).
+
+6. **Security & Configuration**
+   - **JWT authentication** secures the API.
+   - **CORS** allows frontend connections.
+   - Environment variables handle sensitive info.
+
+7. **Deployment & Scaling**
+   - Dockerized for easy deployment.
+   - Supports cloud platforms or VPS.
+   - Can scale horizontally with multiple containers.
 
 ---
 
 ## 🚀 Features
-- ✅ **User Authentication & Authorization** (JWT-based)  
-- ✅ **Student & Staff Management**  
-- ✅ **Course & Enrollment Handling**  
-- ✅ **Database-Driven** (MariaDB/MySQL with JPA/Hibernate)  
-- ✅ **RESTful APIs** for frontend integration  
-- ✅ **Dockerized** for easy deployment  
+
+- ✅ JWT Authentication & Role-Based Authorization  
+- ✅ Student & Staff CRUD Operations  
+- ✅ Course & Enrollment Management  
+- ✅ RESTful API for Frontend Integration  
+- ✅ Database-Driven (MariaDB/MySQL)  
+- ✅ Dockerized for Easy Deployment  
 
 ---
 
 ## 🏗️ Tech Stack
+
 - **Java 21**  
-- **Spring Boot 3** (Web, JPA, Security)  
+- **Spring Boot 3**  
 - **Hibernate ORM**  
 - **MariaDB / MySQL**  
 - **JWT Authentication**  
@@ -28,14 +72,14 @@ This service powers the AcademiQ ecosystem by providing secure APIs for students
 ## 📂 Project Structure
 ```
 academiq-java-api/
-├── src/                # Source code
-│   ├── main/java       # Java code (controllers, services, entities)
-│   ├── main/resources  # Configs (application.properties / yaml)
-│   └── test            # Unit and integration tests
-├── target/             # Compiled JAR (after build)
+├── src/                # Controllers, Services, Entities
+│   ├── main/java
+│   ├── main/resources  # Configs
+│   └── test            # Unit & Integration tests
+├── target/             # Compiled JAR after build
 ├── pom.xml             # Maven dependencies
-├── Dockerfile          # Docker build configuration
-└── render.yaml         # Render.com deployment config
+├── Dockerfile          # Docker build config
+└── render.yaml         # Deployment config
 ```
 
 ---
@@ -71,7 +115,6 @@ CORS_ALLOWED_ORIGINS=http://localhost:3000
 ```bash
 ./mvnw clean package -DskipTests
 ```
-The JAR will be available in `target/academiq-java-api-0.0.1-SNAPSHOT.jar`.
 
 ---
 
@@ -90,17 +133,19 @@ docker run -p 8080:8080 --env-file .env academiq-api
 ---
 
 ## 🌐 API Endpoints (Sample)
+
 - `POST /api/auth/login` → Authenticate user & get JWT  
 - `POST /api/auth/register` → Register student/staff  
 - `GET /api/students` → List all students (admin only)  
 - `POST /api/courses` → Add a new course  
 
-*(Full API docs coming soon)*  
+*(Full API docs coming soon)*
 
 ---
 
 ## 🚀 Deployment
-This service is deployable on:
+
+Deploy on:
 - [Render](https://render.com)  
 - [Railway](https://railway.app)  
 - Docker / Kubernetes  
@@ -109,6 +154,7 @@ This service is deployable on:
 ---
 
 ## 👨‍💻 Contributing
+
 1. Fork the repo  
 2. Create a feature branch (`git checkout -b feature-x`)  
 3. Commit changes (`git commit -m "Added feature x"`)  
@@ -117,4 +163,4 @@ This service is deployable on:
 ---
 
 ## 📜 License
-MIT License © 2025 [Rj979](https://github.com/Rj979)  
+MIT License © 2025 [Rj979](https://github.com/Rj979)
