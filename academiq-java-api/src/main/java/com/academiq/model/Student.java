@@ -1,76 +1,39 @@
 package com.academiq.model;
 
 import jakarta.persistence.*;
+import java.util.Objects;
 
 @Entity
+@Table(name = "students")
 public class Student {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true, nullable = false)
-    private String roll_no;
-
-    private String name;
-
-    @Column(unique = true)
+    private String studentId;
+    private String firstName;
+    private String lastName;
     private String email;
+    private String department;
+    private Integer semester;
+    private String roll_no; // Added roll_no field
 
-    @ManyToOne
-    @JoinColumn(name = "course_id")
-    private Course course;
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private AppUser user;
 
     // Constructors
-    public Student() {}
+    public Student() {
+    }
 
-    public Student(Long id, String roll_no, String name, String email, Course course) {
-        this.id = id;
-        this.roll_no = roll_no;
-        this.name = name;
+    public Student(String studentId, String firstName, String lastName, String email, String department, Integer semester) {
+        this.studentId = studentId;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.email = email;
-        this.course = course;
-    }
-
-    // Builder pattern
-    public static StudentBuilder builder() {
-        return new StudentBuilder();
-    }
-
-    public static class StudentBuilder {
-        private Long id;
-        private String roll_no;
-        private String name;
-        private String email;
-        private Course course;
-
-        public StudentBuilder id(Long id) {
-            this.id = id;
-            return this;
-        }
-
-        public StudentBuilder roll_no(String roll_no) {
-            this.roll_no = roll_no;
-            return this;
-        }
-
-        public StudentBuilder name(String name) {
-            this.name = name;
-            return this;
-        }
-
-        public StudentBuilder email(String email) {
-            this.email = email;
-            return this;
-        }
-
-        public StudentBuilder course(Course course) {
-            this.course = course;
-            return this;
-        }
-
-        public Student build() {
-            return new Student(id, roll_no, name, email, course);
-        }
+        this.department = department;
+        this.semester = semester;
     }
 
     // Getters and Setters
@@ -82,20 +45,28 @@ public class Student {
         this.id = id;
     }
 
-    public String getRoll_no() {
-        return roll_no;
+    public String getStudentId() {
+        return studentId;
     }
 
-    public void setRoll_no(String roll_no) {
-        this.roll_no = roll_no;
+    public void setStudentId(String studentId) {
+        this.studentId = studentId;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getEmail() {
@@ -106,11 +77,63 @@ public class Student {
         this.email = email;
     }
 
-    public Course getCourse() {
-        return course;
+    public String getDepartment() {
+        return department;
     }
 
-    public void setCourse(Course course) {
-        this.course = course;
+    public void setDepartment(String department) {
+        this.department = department;
+    }
+
+    public Integer getSemester() {
+        return semester;
+    }
+
+    public void setSemester(Integer semester) {
+        this.semester = semester;
+    }
+    
+    public String getRoll_no() {
+        return roll_no;
+    }
+
+    public void setRoll_no(String roll_no) {
+        this.roll_no = roll_no;
+    }
+
+    public AppUser getUser() {
+        return user;
+    }
+
+    public void setUser(AppUser user) {
+        this.user = user;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Student student = (Student) o;
+        return Objects.equals(id, student.id) && 
+               Objects.equals(studentId, student.studentId) && 
+               Objects.equals(email, student.email);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, studentId, email);
+    }
+
+    @Override
+    public String toString() {
+        return "Student{" +
+                "id=" + id +
+                ", studentId='" + studentId + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", department='" + department + '\'' +
+                ", semester=" + semester +
+                '}';
     }
 }

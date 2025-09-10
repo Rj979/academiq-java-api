@@ -68,6 +68,7 @@ public class AdminController {
             if (!exists) {
                 AppUser user = AppUser.builder()
                         .username(username)
+                        .email(s.getEmail() != null ? s.getEmail() : username + "@academiq.com")
                         .password(passwordEncoder.encode(defaultPassword))
                         .role("ROLE_STUDENT")
                         .build();
