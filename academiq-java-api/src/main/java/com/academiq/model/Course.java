@@ -12,16 +12,16 @@ public class Course {
     @ManyToOne
     @JoinColumn(name = "teacher_id")
     private Teacher teacher;
-    
+
     @ManyToOne
     @JoinColumn(name = "paper_id")
     private Paper paper;
-    
+
     @Column(name = "semester")
     private String semester;
-    
+
     @Column(name = "academic_year")
-    private String academicYear;
+    private String academicYear; // <- ensure this field exists
 
     // Constructors
     public Course() {}
@@ -45,31 +45,31 @@ public class Course {
     public Teacher getTeacher() {
         return teacher;
     }
-    
+
     public void setTeacher(Teacher teacher) {
         this.teacher = teacher;
     }
-    
+
     public Paper getPaper() {
         return paper;
     }
-    
+
     public void setPaper(Paper paper) {
         this.paper = paper;
     }
-    
+
     public String getSemester() {
         return semester;
     }
-    
+
     public void setSemester(String semester) {
         this.semester = semester;
     }
-    
+
     public String getAcademicYear() {
         return academicYear;
     }
-    
+
     public void setAcademicYear(String academicYear) {
         this.academicYear = academicYear;
     }
