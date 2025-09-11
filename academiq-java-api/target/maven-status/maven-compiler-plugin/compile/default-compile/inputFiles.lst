@@ -1,13 +1,10 @@
 C:\Users\rosha\Documents\github\academiq-java-api\academiq-java-api\src\main\java\com\academiq\config\SecurityConfig.java
 C:\Users\rosha\Documents\github\academiq-java-api\academiq-java-api\src\main\java\com\academiq\controller\SimpleCourseController.java
-C:\Users\rosha\Documents\github\academiq-java-api\academiq-java-api\src\main\java\com\academiq\security\JwtTokenProvider.java
-C:\Users\rosha\Documents\github\academiq-java-api\academiq-java-api\src\main\java\com\academiq\security\CustomUserDetailsService.java
 C:\Users\rosha\Documents\github\academiq-java-api\academiq-java-api\src\main\java\com\academiq\repository\SimpleCourseRepository.java
 C:\Users\rosha\Documents\github\academiq-java-api\academiq-java-api\src\main\java\com\academiq\model\Student.java
 C:\Users\rosha\Documents\github\academiq-java-api\academiq-java-api\src\main\java\com\academiq\repository\StudentRepository.java
 C:\Users\rosha\Documents\github\academiq-java-api\academiq-java-api\src\main\java\com\academiq\model\TimeSchedule.java
 C:\Users\rosha\Documents\github\academiq-java-api\academiq-java-api\src\main\java\com\academiq\AcademiqApplication.java
-C:\Users\rosha\Documents\github\academiq-java-api\academiq-java-api\src\main\java\com\academiq\config\WebSecurityConfig.java
 C:\Users\rosha\Documents\github\academiq-java-api\academiq-java-api\src\main\java\com\academiq\model\SimpleCourse.java
 C:\Users\rosha\Documents\github\academiq-java-api\academiq-java-api\src\main\java\com\academiq\controller\AuthController.java
 C:\Users\rosha\Documents\github\academiq-java-api\academiq-java-api\src\main\java\com\academiq\repository\DepartmentScheduleRepository.java
@@ -16,7 +13,6 @@ C:\Users\rosha\Documents\github\academiq-java-api\academiq-java-api\src\main\jav
 C:\Users\rosha\Documents\github\academiq-java-api\academiq-java-api\src\main\java\com\academiq\repository\TimeScheduleRepository.java
 C:\Users\rosha\Documents\github\academiq-java-api\academiq-java-api\src\main\java\com\academiq\repository\AppUserRepository.java
 C:\Users\rosha\Documents\github\academiq-java-api\academiq-java-api\src\main\java\com\academiq\controller\TimeScheduleController.java
-C:\Users\rosha\Documents\github\academiq-java-api\academiq-java-api\src\main\java\com\academiq\security\JwtAuthenticationFilter.java
 C:\Users\rosha\Documents\github\academiq-java-api\academiq-java-api\src\main\java\com\academiq\config\DataInitializer.java
 C:\Users\rosha\Documents\github\academiq-java-api\academiq-java-api\src\main\java\com\academiq\controller\DepartmentScheduleController.java
 C:\Users\rosha\Documents\github\academiq-java-api\academiq-java-api\src\main\java\com\academiq\model\AppUser.java

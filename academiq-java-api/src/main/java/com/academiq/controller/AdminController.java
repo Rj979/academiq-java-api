@@ -6,7 +6,6 @@ import com.academiq.repository.AppUserRepository;
 import com.academiq.repository.StudentRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -21,16 +20,13 @@ public class AdminController {
     private final JdbcTemplate jdbcTemplate;
     private final StudentRepository studentRepository;
     private final AppUserRepository appUserRepository;
-    private final PasswordEncoder passwordEncoder;
 
     public AdminController(JdbcTemplate jdbcTemplate,
                            StudentRepository studentRepository,
-                           AppUserRepository appUserRepository,
-                           PasswordEncoder passwordEncoder) {
+                           AppUserRepository appUserRepository) {
         this.jdbcTemplate = jdbcTemplate;
         this.studentRepository = studentRepository;
         this.appUserRepository = appUserRepository;
-        this.passwordEncoder = passwordEncoder;
     }
 
     @PostMapping("/cleanup-legacy-tables")
@@ -69,7 +65,7 @@ public class AdminController {
                 AppUser user = AppUser.builder()
                         .username(username)
                         .email(s.getEmail() != null ? s.getEmail() : username + "@academiq.com")
-                        .password(passwordEncoder.encode(defaultPassword))
+                        .password(defaultPassword) // Plain text password
                         .role("ROLE_STUDENT")
                         .build();
                 appUserRepository.save(user);

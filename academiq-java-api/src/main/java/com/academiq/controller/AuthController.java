@@ -2,62 +2,56 @@ package com.academiq.controller;
 
 import com.academiq.model.AppUser;
 import com.academiq.repository.AppUserRepository;
-import com.academiq.security.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/auth")
+@CrossOrigin(origins = {"http://localhost:3000", "http://localhost:5173"})
 public class AuthController {
-
-    @Autowired
-    private AuthenticationManager authenticationManager;
-
-    @Autowired
-    private JwtTokenProvider tokenProvider;
 
     @Autowired
     private AppUserRepository userRepository;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
     @PostMapping("/login/{userType}")
     public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest loginRequest, @PathVariable String userType) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        loginRequest.getUsername(),
-                        loginRequest.getPassword()
-                )
-        );
-
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt = tokenProvider.generateToken(authentication);
-        
-        AppUser user = userRepository.findByUsername(loginRequest.getUsername())
-                .orElseThrow(() -> new RuntimeException("User not found"));
-        
-        Map<String, Object> response = new HashMap<>();
-        response.put("token", jwt);
-        response.put("user", new HashMap<String, Object>() {{
-            put("id", user.getId());
-            put("username", user.getUsername());
-            put("email", user.getEmail());
-            put("firstName", user.getFirstName());
-            put("lastName", user.getLastName());
-            put("roles", user.getRoles());
-        }});
-        
-        return ResponseEntity.ok(response);
+        try {
+            // Simple database lookup
+            Optional<AppUser> userOptional = userRepository.findByUsername(loginRequest.getUsername());
+            
+            if (userOptional.isEmpty()) {
+                return ResponseEntity.status(401).body(Map.of("error", "User not found"));
+            }
+            
+            AppUser user = userOptional.get();
+            
+            // Simple password check (plain text comparison)
+            if (!user.getPassword().equals(loginRequest.getPassword())) {
+                return ResponseEntity.status(401).body(Map.of("error", "Invalid password"));
+            }
+            
+            // Create simple response
+            Map<String, Object> response = new HashMap<>();
+            response.put("token", "simple-token-" + user.getId()); // Simple token
+            response.put("user", Map.of(
+                "id", user.getId(),
+                "username", user.getUsername(),
+                "email", user.getEmail(),
+                "firstName", user.getFirstName() != null ? user.getFirstName() : "",
+                "lastName", user.getLastName() != null ? user.getLastName() : "",
+                "roles", user.getRoles()
+            ));
+            
+            return ResponseEntity.ok(response);
+            
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(Map.of("error", "Login failed: " + e.getMessage()));
+        }
     }
     
     public static class LoginRequest {
