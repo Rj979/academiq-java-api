@@ -9,7 +9,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/time_schedule")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "https://rj979.github.io")
 public class TimeScheduleController {
 
     private final TimeScheduleRepository repo;

@@ -14,7 +14,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/admin")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "https://rj979.github.io")
 public class AdminController {
 
     private final JdbcTemplate jdbcTemplate;

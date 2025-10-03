@@ -9,7 +9,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/simple-courses")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "https://rj979.github.io")
 public class SimpleCourseController {
     private final SimpleCourseRepository repo;
 
