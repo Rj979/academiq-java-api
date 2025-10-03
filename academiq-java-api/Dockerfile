@@ -1,12 +1,34 @@
-FROM eclipse-temurin:21-jdk-alpine
+# ==========================
+# Build Stage
+# ==========================
+FROM maven:3.8.4-openjdk-17 AS build
+
+# Set working directory inside container
 WORKDIR /app
 
-# Set your JWT secret as an environment variable
-ENV JWT_SECRET=7a9d8f3e2c1b6a5d4f0e1b2c3d4a5f6b7e8c9d0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8
+# Copy pom.xml and download dependencies
+COPY pom.xml .
+RUN mvn dependency:go-offline -B
 
-COPY target/academiq-java-api-0.0.1-SNAPSHOT.jar app.jar
+# Copy source code
+COPY src ./src
 
-# Expose the dynamic Render port
-EXPOSE ${PORT}
+# Package the application without running tests
+RUN mvn clean package -DskipTests
 
-ENTRYPOINT ["java","-jar","app.jar"]
+# ==========================
+# Run Stage
+# ==========================
+FROM openjdk:17-jdk-slim
+
+# Set working directory
+WORKDIR /app
+
+# Copy JAR file from build stage
+COPY --from=build /app/target/academiq-java-api-0.0.1-SNAPSHOT.jar app.jar
+
+# Expose the Spring Boot server port
+EXPOSE 8080
+
+# Run the application
+ENTRYPOINT ["java", "-jar", "app.jar"]
