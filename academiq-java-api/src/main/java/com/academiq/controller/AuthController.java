@@ -1,14 +1,20 @@
 package com.academiq.controller;
 
-import com.academiq.model.AppUser;
-import com.academiq.repository.AppUserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.academiq.model.AppUser;
+import com.academiq.repository.AppUserRepository;
 
 @RestController
 @RequestMapping("/auth")
@@ -33,6 +39,30 @@ public class AuthController {
             // Simple password check (plain text comparison)
             if (!user.getPassword().equals(loginRequest.getPassword())) {
                 return ResponseEntity.status(401).body(Map.of("error", "Invalid password"));
+            }
+
+            // Enforce role-based login based on {userType} in the path
+            String normalizedUserType = userType == null ? "" : userType.trim().toLowerCase();
+            boolean roleAllowed;
+            switch (normalizedUserType) {
+                case "student":
+                    roleAllowed = user.getRoles() != null && user.getRoles().contains("STUDENT");
+                    break;
+                case "teacher": // map teacher login route to STAFF role
+                case "staff":
+                    roleAllowed = user.getRoles() != null && user.getRoles().contains("STAFF");
+                    break;
+                case "admin":
+                    roleAllowed = user.getRoles() != null && user.getRoles().contains("ADMIN");
+                    break;
+                default:
+                    return ResponseEntity.badRequest().body(Map.of("error", "Invalid userType: " + userType));
+            }
+
+            if (!roleAllowed) {
+                return ResponseEntity.status(403).body(Map.of(
+                    "error", "Role mismatch: user cannot log in as " + normalizedUserType
+                ));
             }
             
             // Create simple response
